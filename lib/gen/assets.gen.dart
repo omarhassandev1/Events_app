@@ -26,8 +26,41 @@ class $AssetsImagesGen {
   /// File path: assets/images/appIcon.png
   AssetGenImage get appIcon => const AssetGenImage('assets/images/appIcon.png');
 
+  /// File path: assets/images/event_birthday.png
+  AssetGenImage get eventBirthday =>
+      const AssetGenImage('assets/images/event_birthday.png');
+
+  /// File path: assets/images/event_eating.png
+  AssetGenImage get eventEating =>
+      const AssetGenImage('assets/images/event_eating.png');
+
+  /// File path: assets/images/event_meating.png
+  AssetGenImage get eventMeeting =>
+      const AssetGenImage('assets/images/event_meating.png');
+
+  /// File path: assets/images/event_sport.png
+  AssetGenImage get eventSport =>
+      const AssetGenImage('assets/images/event_sport.png');
+
+  /// File path: assets/images/event_workshop.png
+  AssetGenImage get eventWorkshop =>
+      const AssetGenImage('assets/images/event_workshop.png');
+
+  /// File path: assets/images/route.png
+  AssetGenImage get route => const AssetGenImage('assets/images/route.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [eg, us, appIcon];
+  List<AssetGenImage> get values => [
+    eg,
+    us,
+    appIcon,
+    eventBirthday,
+    eventEating,
+    eventMeeting,
+    eventSport,
+    eventWorkshop,
+    route,
+  ];
 }
 
 class $AssetsSvgGen {
@@ -39,14 +72,49 @@ class $AssetsSvgGen {
   /// File path: assets/svg/google.svg
   SvgGenImage get google => const SvgGenImage('assets/svg/google.svg');
 
+  /// File path: assets/svg/heart_filled.svg
+  SvgGenImage get heartFilled =>
+      const SvgGenImage('assets/svg/heart_filled.svg');
+
+  /// File path: assets/svg/heart_outlined.svg
+  SvgGenImage get heartOutlined =>
+      const SvgGenImage('assets/svg/heart_outlined.svg');
+
+  /// File path: assets/svg/home_filled.svg
+  SvgGenImage get homeFilled => const SvgGenImage('assets/svg/home_filled.svg');
+
+  /// File path: assets/svg/home_outlined.svg
+  SvgGenImage get homeOutlined =>
+      const SvgGenImage('assets/svg/home_outlined.svg');
+
   /// File path: assets/svg/invisible.svg
   SvgGenImage get invisible => const SvgGenImage('assets/svg/invisible.svg');
+
+  /// File path: assets/svg/location_filled_dark.svg
+  SvgGenImage get locationFilledDark =>
+      const SvgGenImage('assets/svg/location_filled_dark.svg');
+
+  /// File path: assets/svg/location_filled_light.svg
+  SvgGenImage get locationFilledLight =>
+      const SvgGenImage('assets/svg/location_filled_light.svg');
+
+  /// File path: assets/svg/location_outlined.svg
+  SvgGenImage get locationOutlined =>
+      const SvgGenImage('assets/svg/location_outlined.svg');
 
   /// File path: assets/svg/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/svg/lock.svg');
 
   /// File path: assets/svg/person.svg
   SvgGenImage get person => const SvgGenImage('assets/svg/person.svg');
+
+  /// File path: assets/svg/profile_filled.svg
+  SvgGenImage get profileFilled =>
+      const SvgGenImage('assets/svg/profile_filled.svg');
+
+  /// File path: assets/svg/profile_outlined.svg
+  SvgGenImage get profileOutlined =>
+      const SvgGenImage('assets/svg/profile_outlined.svg');
 
   /// File path: assets/svg/watch.svg
   SvgGenImage get watch => const SvgGenImage('assets/svg/watch.svg');
@@ -55,9 +123,18 @@ class $AssetsSvgGen {
   List<SvgGenImage> get values => [
     email,
     google,
+    heartFilled,
+    heartOutlined,
+    homeFilled,
+    homeOutlined,
     invisible,
+    locationFilledDark,
+    locationFilledLight,
+    locationOutlined,
     lock,
     person,
+    profileFilled,
+    profileOutlined,
     watch,
   ];
 }

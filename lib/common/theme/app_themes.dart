@@ -16,6 +16,8 @@ class AppTheme {
     ),
     hintColor: AppColors.grayColor,
     hoverColor: AppColors.grayColor,
+    focusColor: AppColors.lightBg,
+    cardColor: AppColors.mainColor,
     appBarTheme: AppBarTheme(
       color: AppColors.lightBg,
       iconTheme: IconThemeData(color: AppColors.mainColor),
@@ -27,6 +29,21 @@ class AppTheme {
       ),
     ),
     textTheme: _getTextTheme(AppColors.textColorLight),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      elevation: 20,
+      backgroundColor: AppColors.mainColor,
+      selectedItemColor: AppColors.lightBg,
+      unselectedItemColor: AppColors.lightBg,
+      showSelectedLabels: false,
+      showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      unselectedLabelStyle: TextStyle(
+        color: AppColors.lightBg,
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+
   );
 
   static ThemeData dartTheme = ThemeData(
@@ -42,6 +59,8 @@ class AppTheme {
     ),
     hintColor: AppColors.mainColor,
     hoverColor: AppColors.textColorDark,
+    focusColor: AppColors.mainColor,
+    cardColor: AppColors.lightBg,
     appBarTheme: AppBarTheme(
       color: AppColors.darkBg,
       iconTheme: IconThemeData(color: AppColors.mainColor),
@@ -53,6 +72,20 @@ class AppTheme {
       ),
     ),
     textTheme: _getTextTheme(AppColors.textColorDark),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      elevation: 20,
+      backgroundColor: AppColors.darkBg,
+      selectedItemColor: AppColors.lightBg,
+      unselectedItemColor: AppColors.lightBg,
+      showSelectedLabels: false,
+      showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      unselectedLabelStyle: TextStyle(
+        color: AppColors.lightBg,
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
   );
 
   static TextTheme _getTextTheme(Color textColor) {
