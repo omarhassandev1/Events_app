@@ -1,7 +1,7 @@
 import 'package:evently_application/models/category_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/theme/app_colors.dart';
+import '../../../../common/theme/app_colors.dart';
 
 class CategorySelectorView extends StatelessWidget {
   const CategorySelectorView({

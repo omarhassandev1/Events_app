@@ -35,7 +35,7 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/event_eating.png');
 
   /// File path: assets/images/event_meating.png
-  AssetGenImage get eventMeeting =>
+  AssetGenImage get eventMeating =>
       const AssetGenImage('assets/images/event_meating.png');
 
   /// File path: assets/images/event_sport.png
@@ -45,6 +45,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/event_workshop.png
   AssetGenImage get eventWorkshop =>
       const AssetGenImage('assets/images/event_workshop.png');
+
+  /// Directory path: assets/images/onboarding
+  $AssetsImagesOnboardingGen get onboarding =>
+      const $AssetsImagesOnboardingGen();
 
   /// File path: assets/images/route.png
   AssetGenImage get route => const AssetGenImage('assets/images/route.png');
@@ -56,15 +60,32 @@ class $AssetsImagesGen {
     appIcon,
     eventBirthday,
     eventEating,
-    eventMeeting,
+    eventMeating,
     eventSport,
     eventWorkshop,
     route,
   ];
 }
 
+class $AssetsSplashScreenGen {
+  const $AssetsSplashScreenGen();
+
+  /// Directory path: assets/splash_screen/branding
+  $AssetsSplashScreenBrandingGen get branding =>
+      const $AssetsSplashScreenBrandingGen();
+
+  /// Directory path: assets/splash_screen/logos
+  $AssetsSplashScreenLogosGen get logos => const $AssetsSplashScreenLogosGen();
+}
+
 class $AssetsSvgGen {
   const $AssetsSvgGen();
+
+  /// File path: assets/svg/delete_icon.svg
+  SvgGenImage get deleteIcon => const SvgGenImage('assets/svg/delete_icon.svg');
+
+  /// File path: assets/svg/edit_icon.svg
+  SvgGenImage get editIcon => const SvgGenImage('assets/svg/edit_icon.svg');
 
   /// File path: assets/svg/email.svg
   SvgGenImage get email => const SvgGenImage('assets/svg/email.svg');
@@ -105,6 +126,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/svg/lock.svg');
 
+  /// Directory path: assets/svg/onboarding
+  $AssetsSvgOnboardingGen get onboarding => const $AssetsSvgOnboardingGen();
+
   /// File path: assets/svg/person.svg
   SvgGenImage get person => const SvgGenImage('assets/svg/person.svg');
 
@@ -121,6 +145,8 @@ class $AssetsSvgGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+    deleteIcon,
+    editIcon,
     email,
     google,
     heartFilled,
@@ -139,10 +165,77 @@ class $AssetsSvgGen {
   ];
 }
 
+class $AssetsImagesOnboardingGen {
+  const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/onboarding/1.png
+  AssetGenImage get a1 => const AssetGenImage('assets/images/onboarding/1.png');
+
+  /// File path: assets/images/onboarding/2.png
+  AssetGenImage get a2 => const AssetGenImage('assets/images/onboarding/2.png');
+
+  /// File path: assets/images/onboarding/3.png
+  AssetGenImage get a3 => const AssetGenImage('assets/images/onboarding/3.png');
+
+  /// File path: assets/images/onboarding/4.png
+  AssetGenImage get a4 => const AssetGenImage('assets/images/onboarding/4.png');
+
+  /// File path: assets/images/onboarding/header.png
+  AssetGenImage get header =>
+      const AssetGenImage('assets/images/onboarding/header.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [a1, a2, a3, a4, header];
+}
+
+class $AssetsSplashScreenBrandingGen {
+  const $AssetsSplashScreenBrandingGen();
+
+  /// File path: assets/splash_screen/branding/branding_dark.png
+  AssetGenImage get brandingDark =>
+      const AssetGenImage('assets/splash_screen/branding/branding_dark.png');
+
+  /// File path: assets/splash_screen/branding/branding_light.png
+  AssetGenImage get brandingLight =>
+      const AssetGenImage('assets/splash_screen/branding/branding_light.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [brandingDark, brandingLight];
+}
+
+class $AssetsSplashScreenLogosGen {
+  const $AssetsSplashScreenLogosGen();
+
+  /// File path: assets/splash_screen/logos/icon_dark.png
+  AssetGenImage get iconDark =>
+      const AssetGenImage('assets/splash_screen/logos/icon_dark.png');
+
+  /// File path: assets/splash_screen/logos/icon_light.png
+  AssetGenImage get iconLight =>
+      const AssetGenImage('assets/splash_screen/logos/icon_light.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [iconDark, iconLight];
+}
+
+class $AssetsSvgOnboardingGen {
+  const $AssetsSvgOnboardingGen();
+
+  /// File path: assets/svg/onboarding/Moon.svg
+  SvgGenImage get moon => const SvgGenImage('assets/svg/onboarding/Moon.svg');
+
+  /// File path: assets/svg/onboarding/Sun.svg
+  SvgGenImage get sun => const SvgGenImage('assets/svg/onboarding/Sun.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [moon, sun];
+}
+
 class Assets {
   const Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsSplashScreenGen splashScreen = $AssetsSplashScreenGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
 }
 

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../../../models/user_model.dart';
 import '../../../../common/theme/app_colors.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../provider/user_provider.dart';
 
 class SettingsHeader extends StatelessWidget {
   const SettingsHeader({super.key});
 
+
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+
+  UserModel userModel = Provider.of<UserProvider>(context).userModel!;
+
+  double screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
       height: screenHeight * 0.25,
@@ -43,7 +49,7 @@ class SettingsHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'John Safwat',
+                      userModel.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -51,7 +57,7 @@ class SettingsHeader extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'johnsafwat.route@gmail.com',
+                      userModel.email,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
