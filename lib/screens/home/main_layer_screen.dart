@@ -1,10 +1,15 @@
 import 'package:evently_application/common/theme/app_colors.dart';
+import 'package:evently_application/models/user_model.dart';
+import 'package:evently_application/network/auth_service.dart';
+import 'package:evently_application/provider/user_provider.dart';
 import 'package:evently_application/screens/home/home_tab/home_tab.dart';
 import 'package:evently_application/screens/home/settings_tab/settings_tab.dart';
-import 'package:evently_application/screens/new_event/new_event_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
+import '../events/new_event/new_event_screen.dart';
 import 'fav_tab/favorite_tab.dart';
 
 class MainLayerScreen extends StatefulWidget {
@@ -18,19 +23,37 @@ class MainLayerScreen extends StatefulWidget {
 
 class _MainLayerScreenState extends State<MainLayerScreen> {
   int currentIndex = 0;
+  bool isLoading = true;
 
   List<Widget> tabs = [
     HomeTab(),
-    Container(color: Colors.red,),
+    Container(color: Colors.red),
     FavoriteTab(),
     SettingsTab(),
   ];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initializeUser();
+  }
+
+  initializeUser() async {
+    UserModel userModel = (await AuthService.getUSerInfo())!;
+    Provider.of<UserProvider>(context, listen: false).userModel = userModel;
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: tabs[currentIndex],
+      body:
+          isLoading
+              ? Center(child: CircularProgressIndicator())
+              : tabs[currentIndex],
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.zero,
         shape: CircularNotchedRectangle(),

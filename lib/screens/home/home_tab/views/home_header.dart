@@ -1,13 +1,19 @@
 import 'package:evently_application/common/theme/app_colors.dart';
 import 'package:evently_application/models/category_model.dart';
+import 'package:evently_application/provider/events_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../models/user_model.dart';
+import '../../../../provider/user_provider.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+  UserModel userModel = Provider.of<UserProvider>(context).userModel!;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
@@ -32,7 +38,7 @@ class HomeHeader extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'John Safwan',
+                      userModel.name,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -100,18 +106,12 @@ class HomeHeader extends StatelessWidget {
   }
 }
 
-class FilterView extends StatefulWidget {
+class FilterView extends StatelessWidget {
   const FilterView({super.key});
 
   @override
-  State<FilterView> createState() => _FilterViewState();
-}
-
-class _FilterViewState extends State<FilterView> {
-  int selectedId = CategoryModel.categories.first.id;
-
-  @override
   Widget build(BuildContext context) {
+    int selectedId = Provider.of<EventProvider>(context).selectedCatId;
     List<CategoryModel> categories = CategoryModel.categories;
     return SizedBox(
       height: 40,
@@ -119,7 +119,7 @@ class _FilterViewState extends State<FilterView> {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           CategoryModel currentCategory = categories[index];
-          bool isSelected = selectedId==currentCategory.id;
+          bool isSelected = selectedId == currentCategory.id;
           return Theme(
             data: Theme.of(context).copyWith(cardColor: Colors.transparent),
             child: FilterChip(
@@ -150,9 +150,7 @@ class _FilterViewState extends State<FilterView> {
                 ],
               ),
               onSelected: (value) {
-                setState(() {
-                  selectedId = currentCategory.id;
-                });
+                Provider.of<EventProvider>(context,listen: false).editSelectedId(currentCategory.id);
               },
               selected: isSelected,
               selectedColor: Theme.of(context).focusColor,

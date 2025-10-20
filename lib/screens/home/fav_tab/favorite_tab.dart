@@ -1,26 +1,19 @@
 import 'package:evently_application/common/theme/app_colors.dart';
 import 'package:evently_application/common/widgets/custom_text_field.dart';
-import 'package:evently_application/common/widgets/event_card.dart';
+import 'package:evently_application/models/user_model.dart';
+import 'package:evently_application/provider/user_provider.dart';
 import 'package:evently_application/screens/home/home_tab/views/events_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../models/event_model.dart';
+import '../../../common/widgets/custom_main_button.dart';
 
 class FavoriteTab extends StatelessWidget {
   const FavoriteTab({super.key});
-
+  static const String routeName = '/favoriteScreen';
   @override
   Widget build(BuildContext context) {
-    List<EventModel> events = List.generate(
-      4,
-      (index) => EventModel(
-        title: 'title $index',
-        date: '22\nDec',
-        description: 'description',
-        isFav: index / 2 == 0,
-        catId: index+2,
-      ),
-    );
+    UserModel? userModel = Provider.of<UserProvider>(context).userModel;
     return SafeArea(
       child: Column(
         children: [
@@ -33,7 +26,7 @@ class FavoriteTab extends StatelessWidget {
               hintColor: AppColors.mainColor,
             ),
           ),
-          EventsListView(events: events)
+          Expanded(child: EventsListView(events: userModel?.favEvents??[]))
         ],
       ),
     );
