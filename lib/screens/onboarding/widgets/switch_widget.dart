@@ -2,17 +2,19 @@ import 'package:evently_application/common/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-class SwitchButton extends StatefulWidget {
-  const SwitchButton({super.key, required this.activeIcon, required this.inActiveIcon});
+class SwitchButton extends StatelessWidget {
+  const SwitchButton({
+    super.key,
+    required this.activeIcon,
+    required this.inActiveIcon,
+    required this.value,
+    required this.onToggle,
+  });
+
   final Widget activeIcon;
   final Widget inActiveIcon;
-
-  @override
-  State<SwitchButton> createState() => _SwitchButtonState();
-}
-
-class _SwitchButtonState extends State<SwitchButton> {
-  bool active = false;
+  final bool value;
+  final Function(bool) onToggle;
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +26,12 @@ class _SwitchButtonState extends State<SwitchButton> {
       borderRadius: 40.0,
       activeColor: AppColors.mainColor,
       inactiveColor: AppColors.lightBg,
-      inactiveSwitchBorder: Border.all(
-        width: 4,
-        color: AppColors.mainColor
-      ),
+      inactiveSwitchBorder: Border.all(width: 4, color: AppColors.mainColor),
       inactiveToggleColor: AppColors.mainColor,
-      value: active,
-      activeIcon:widget.activeIcon,
-      inactiveIcon: widget.inActiveIcon,
-      onToggle: (val) {
-        setState(() {
-          active = val;
-        });
-      },
+      value: value,
+      activeIcon: activeIcon,
+      inactiveIcon: inActiveIcon,
+      onToggle: onToggle,
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../models/user_model.dart';
 import '../../../../provider/user_provider.dart';
-
+import 'package:evently_application/generated/app_localizations.dart';
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
 
@@ -30,7 +30,7 @@ class HomeHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Welcome Back ✨',
+                      AppLocalizations.of(context)!.home,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
@@ -137,7 +137,7 @@ class FilterView extends StatelessWidget {
                             : AppColors.lightBg,
                   ),
                   Text(
-                    currentCategory.title,
+                    currentCategory.getLocalizedTitle(context),
                     style: TextStyle(
                       color:
                           isSelected

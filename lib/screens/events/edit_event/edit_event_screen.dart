@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../common/widgets/custom_text_field.dart';
+import '../../../generated/app_localizations.dart';
 import '../../../provider/events_provider.dart';
 import '../../../provider/user_provider.dart';
 
@@ -45,7 +46,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Edit Event')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.editEvent)),
       body: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Form(
@@ -66,7 +67,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   ),
                   CustomTextField(
                     controller: titleController,
-                    label: 'Title',
+                    label: AppLocalizations.of(context)!.title,
                     hintText: 'Event title',
                     prefixIcon: Icon(Icons.edit_outlined),
                     validator: (value) {
@@ -78,12 +79,12 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   ),
                   CustomTextField(
                     controller: descriptionController,
-                    label: 'Description',
-                    hintText: 'Event description',
+                    label: AppLocalizations.of(context)!.description,
+                    hintText: AppLocalizations.of(context)!.eventDescription,
                     maxLines: 5,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'The title is required';
+                        return 'description is required';
                       }
                       return null;
                     },
@@ -99,7 +100,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                 Theme.of(context).textTheme.titleMedium!.color,
                           ),
                           Text(
-                            "Event Date",
+                            AppLocalizations.of(context)!.eventDate,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Spacer(),
@@ -134,7 +135,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                 Theme.of(context).textTheme.titleMedium!.color,
                           ),
                           Text(
-                            "Event Time",
+                            AppLocalizations.of(context)!.eventTime,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Spacer(),
@@ -185,7 +186,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           ),
                         ),
                         Text(
-                          'Choose Event Location',
+                          AppLocalizations.of(context)!.chooseEventLocation,
                           style: Theme.of(context).textTheme.titleMedium!
                               .copyWith(color: AppColors.mainColor),
                         ),
@@ -197,88 +198,10 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       ],
                     ),
                   ),
-                  // SafeArea(
-                  //   child: CustomMainButton(
-                  //     text: 'Update',
-                  //     onPressed: () async {
-                  //       if (_formKey.currentState!.validate()) {
-                  //         try {
-                  //           showDialog(
-                  //             context: context,
-                  //             builder:
-                  //                 (context) => Center(
-                  //                   child: Column(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.center,
-                  //                     mainAxisSize: MainAxisSize.min,
-                  //                     children: [
-                  //                       Container(
-                  //                         padding: EdgeInsets.all(50),
-                  //                         decoration: BoxDecoration(
-                  //                           color:
-                  //                               Theme.of(
-                  //                                 context,
-                  //                               ).scaffoldBackgroundColor,
-                  //                           borderRadius: BorderRadius.circular(
-                  //                             25,
-                  //                           ),
-                  //                         ),
-                  //                         child: CircularProgressIndicator(),
-                  //                       ),
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //             barrierDismissible: false,
-                  //           );
-                  //           if (selectedDate != null) {
-                  //             widget.eventModel.date = DateFormat(
-                  //               'yyyy-MM-dd hh:mm',
-                  //             ).format(selectedDate!);
-                  //           }
-                  //           await Provider.of<EventProvider>(
-                  //             context,
-                  //             listen: false,
-                  //           ).editEvent(
-                  //             event:  widget.eventModel,
-                  //             title: titleController.text,
-                  //             description: descriptionController.text,
-                  //             catId: widget.selectedCategory.id,
-                  //           );
-                  //
-                  //           Provider.of<UserProvider>(context,listen: false).updateFavEvent(
-                  //             event:  widget.eventModel,
-                  //             title: titleController.text,
-                  //             description: descriptionController.text,
-                  //             catId: widget.selectedCategory.id,);
-                  //           Navigator.of(context).pop();
-                  //           Navigator.of(context).pop();
-                  //           Navigator.of(context).pop();
-                  //
-                  //           Fluttertoast.showToast(
-                  //             msg: 'Event Updated',
-                  //             backgroundColor: Colors.green,
-                  //           );
-                  //           setState(() {});
-                  //         } catch (e) {
-                  //           Fluttertoast.showToast(
-                  //             msg: e.toString(),
-                  //             backgroundColor: Colors.red,
-                  //           );
-                  //         }
-                  //       } else {
-                  //         Fluttertoast.showToast(
-                  //           msg: 'Date and time required !',
-                  //           backgroundColor: Colors.red,
-                  //         );
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
-
 
                   SafeArea(
                     child: CustomMainButton(
-                      text: 'Update',
+                      text: AppLocalizations.of(context)!.update,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           try {
@@ -303,7 +226,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                               barrierDismissible: false,
                             );
 
-                            // ✅ معالجة التاريخ والوقت بشكل صحيح
                             DateTime currentDateTime =
                             DateFormat('yyyy-MM-dd hh:mm').parse(widget.eventModel.date);
 
@@ -321,7 +243,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                             widget.eventModel.date =
                                 DateFormat('yyyy-MM-dd hh:mm').format(updatedDateTime);
 
-                            // ✅ التحديث في event الرئيسي
                             await Provider.of<EventProvider>(
                               context,
                               listen: false,
@@ -332,7 +253,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                               catId: widget.selectedCategory.id,
                             );
 
-                            // ✅ التحديث في fav events
                             await Provider.of<UserProvider>(
                               context,
                               listen: false,

@@ -54,7 +54,7 @@ class CategorySelectorView extends StatelessWidget {
                               : AppColors.mainColor,
                     ),
                     Text(
-                      currentCategory.title,
+                      currentCategory.getLocalizedTitle(context),
                       style: TextStyle(
                         color:
                             isSelected

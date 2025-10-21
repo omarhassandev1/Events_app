@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../common/widgets/custom_text_field.dart';
+import '../../../generated/app_localizations.dart';
 import '../../../provider/events_provider.dart';
 
 class NewEventScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Create Event')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.createEvent)),
       body: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Form(
@@ -51,7 +52,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
                   ),
                   CustomTextField(
                     controller: titleController,
-                    label: 'Title',
+                    label: AppLocalizations.of(context)!.title,
                     hintText: 'Event title',
                     prefixIcon: Icon(Icons.edit_outlined),
                     validator: (value) {
@@ -63,8 +64,8 @@ class _NewEventScreenState extends State<NewEventScreen> {
                   ),
                   CustomTextField(
                     controller: descriptionController,
-                    label: 'Description',
-                    hintText: 'Event description',
+                    label: AppLocalizations.of(context)!.description,
+                    hintText: AppLocalizations.of(context)!.eventDescription,
                     maxLines: 5,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -84,7 +85,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
                                 Theme.of(context).textTheme.titleMedium!.color,
                           ),
                           Text(
-                            "Event Date",
+                            AppLocalizations.of(context)!.eventDate,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Spacer(),
@@ -119,7 +120,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
                                 Theme.of(context).textTheme.titleMedium!.color,
                           ),
                           Text(
-                            "Event Time",
+                            AppLocalizations.of(context)!.eventTime,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Spacer(),
@@ -170,7 +171,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
                           ),
                         ),
                         Text(
-                          'Choose Event Location',
+                          AppLocalizations.of(context)!.chooseEventLocation,
                           style: Theme.of(context).textTheme.titleMedium!
                               .copyWith(color: AppColors.mainColor),
                         ),
@@ -184,7 +185,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
                   ),
                   SafeArea(
                     child: CustomMainButton(
-                      text: 'Save',
+                      text: AppLocalizations.of(context)!.save,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           if (selectedTime != null && selectedDate != null) {
@@ -266,14 +267,14 @@ class _NewEventScreenState extends State<NewEventScreen> {
 
   String _getTimeText() {
     if (selectedTime == null) {
-      return 'Select TIme';
+      return AppLocalizations.of(context)!.selectTime;
     }
     return selectedTime!.format(context);
   }
 
   String _getDateText() {
     if (selectedDate == null) {
-      return 'Select Date';
+      return AppLocalizations.of(context)!.selectDate;
     }
     return DateFormat.yMEd().format(selectedDate!);
   }

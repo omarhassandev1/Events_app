@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField({
+   CustomTextField({
     super.key,
     this.hintText,
     this.validator,
@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
     this.maxLines = 1,
     this.controller,
     this.isPassword = false,
+    this.onChanged
   });
 
   final String? hintText;
@@ -25,6 +26,7 @@ class CustomTextField extends StatefulWidget {
   final int? maxLines;
   final TextEditingController? controller;
   final bool isPassword;
+  void Function(String)? onChanged;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -96,6 +98,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     )
                     : null,
           ),
+          onChanged: widget.onChanged,
         ),
       ],
     );
