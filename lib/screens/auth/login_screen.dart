@@ -1,16 +1,20 @@
 import 'package:evently_application/common/widgets/snackbar_helper.dart';
+import 'package:evently_application/generated/app_localizations.dart';
 import 'package:evently_application/models/user_model.dart';
 import 'package:evently_application/network/auth_service.dart';
 import 'package:evently_application/screens/auth/forget_password.dart';
 import 'package:evently_application/screens/auth/signup_screen.dart';
 import 'package:evently_application/screens/home/main_layer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/theme/app_colors.dart';
 import '../../common/widgets/custom_main_button.dart';
 import '../../common/widgets/custom_outlined_button.dart';
 import '../../common/widgets/custom_text_field.dart';
 import '../../gen/assets.gen.dart';
+import '../../provider/settings_provider.dart';
+import '../onboarding/widgets/switch_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,6 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final settings = Provider.of<SettingsProvider>(context);
+    bool isArabic = settings.localization == 'ar';
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -56,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 24),
                   CustomTextField(
                     controller: emailController,
-                    hintText: 'Email',
+                    hintText: AppLocalizations.of(context)!.email,
                     prefixIcon: Assets.svg.email.svg(
                       colorFilter: ColorFilter.mode(
                         Theme.of(context).hoverColor,
@@ -68,9 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                       ).hasMatch(value ?? "");
                       if (value == null || value.isEmpty) {
-                        return 'email is required';
+                        return AppLocalizations.of(context)!.emailRequired;
                       } else if (!emailValid) {
-                        return 'Invalid email';
+                        return AppLocalizations.of(context)!.invalidEmail;
                       }
                       return null;
                     },
@@ -79,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     isPassword: true,
                     controller: passwordController,
-                    hintText: 'password',
+                    hintText: AppLocalizations.of(context)!.password,
                     prefixIcon: Assets.svg.lock.svg(
                       colorFilter: ColorFilter.mode(
                         Theme.of(context).hoverColor,
@@ -88,9 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'name is required';
+                        return AppLocalizations.of(context)!.passwordRequired;
                       } else if (value.length < 8) {
-                        return 'password must be at least 8 characters';
+                        return AppLocalizations.of(context)!.passwordMinLength;
                       }
                       return null;
                     },
@@ -106,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ).pushNamed(ForgetPassword.routName);
                         },
                         child: Text(
-                          'Forget Password?',
+                          AppLocalizations.of(context)!.forgetPassword,
                           style: TextStyle(
                             color: AppColors.mainColor,
                             fontSize: 16,
@@ -123,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   !isLoading
                       ? CustomMainButton(
-                        text: 'Login',
+                        text: AppLocalizations.of(context)!.login,
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             try {
@@ -135,12 +142,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 passwordController.text,
                               );
                               if(user==null){
-                                throw 'Invalid user';
+                                throw AppLocalizations.of(context)!.loginFailed;
                               }
                               Navigator.of(context).pushReplacementNamed(MainLayerScreen.routName);
                               SnackBarHelper.showSnackBarHelper(
                                 context: context,
-                                message: 'Success',
+                                message: AppLocalizations.of(context)!.loginSuccess,
                               );
                               setState(() {
                                 isLoading = false;
@@ -164,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     spacing: 5,
                     children: [
                       Text(
-                        'Don’t Have Account?  ',
+                        AppLocalizations.of(context)!.noAccount,
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       GestureDetector(
@@ -174,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ).pushNamed(SignupScreen.routName);
                         },
                         child: Text(
-                          'Create Account',
+                          AppLocalizations.of(context)!.createAccount,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.mainColor,
@@ -191,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Expanded(child: Divider()),
                       Text(
-                        'Or',
+                        AppLocalizations.of(context)!.or,
                         style: TextStyle(
                           color: AppColors.mainColor,
                           fontSize: 16,
@@ -209,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Assets.svg.google.svg(),
                         Text(
-                          'Login With Google',
+                          AppLocalizations.of(context)!.loginWithGoogle,
                           style: TextStyle(
                             color: AppColors.mainColor,
                             fontWeight: FontWeight.w500,
@@ -220,11 +227,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  Switch(
-                    value: true,
-                    onChanged: (value) {},
-                    activeThumbImage: AssetImage(Assets.images.us.path),
-                    inactiveThumbImage: AssetImage(Assets.images.eg.path),
+                  SwitchButton(
+                    activeIcon: Assets.images.eg.image(),
+                    inActiveIcon: Assets.images.us.image(),
+                    value: isArabic,
+                    onToggle: (value) {
+                      Provider.of<SettingsProvider>(
+                          context,
+                          listen: false
+                      ).editLocalization(value ? 'ar' : 'en');
+                    },
                   ),
                 ],
               ),

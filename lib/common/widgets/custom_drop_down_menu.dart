@@ -7,12 +7,13 @@ class CustomDropDownMenu<T> extends StatelessWidget {
     super.key,
     required this.items,
     required this.onChanged,
-    this.label,
+    this.label, this.value,
   });
 
   final List<DropdownMenuItem<T>> items;
   final void Function(T?)? onChanged;
   final String? label;
+  final T? value;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,8 @@ class CustomDropDownMenu<T> extends StatelessWidget {
               enabledBorder: _getBorder(),
             ),
             items: items,
-            onChanged: (value) {},
+            onChanged: onChanged,
+            value: value,
           ),
         ],
       ),

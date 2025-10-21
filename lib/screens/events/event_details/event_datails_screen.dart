@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../../generated/app_localizations.dart';
 import '../edit_event/edit_event_screen.dart';
 
 class EventDetailsScreen extends StatelessWidget {
@@ -19,7 +20,7 @@ class EventDetailsScreen extends StatelessWidget {
         CategoryModel.categories.where((e) => e.id == eventModel.catId).first;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event details'),
+        title: Text(AppLocalizations.of(context)!.eventDescription),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -46,7 +47,7 @@ class EventDetailsScreen extends StatelessWidget {
                             backgroundColor:
                                 Theme.of(context).scaffoldBackgroundColor,
                             title: Text(
-                              'Delete Event',
+                              AppLocalizations.of(context)!.deleteEvent,
                               style: TextStyle(
                                 color: AppColors.errorColor,
                                 fontSize: 24,
@@ -54,14 +55,14 @@ class EventDetailsScreen extends StatelessWidget {
                               ),
                             ),
                             content: Text(
-                              'Are you sure you want to delete this event?',
+                              AppLocalizations.of(context)!.areYouSure,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
                                 child: Text(
-                                  'Cancel',
+                                  AppLocalizations.of(context)!.cancel,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
@@ -83,7 +84,7 @@ class EventDetailsScreen extends StatelessWidget {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Delete'),
+                                child: Text(AppLocalizations.of(context)!.delete),
                               ),
                             ],
                           ),
@@ -175,12 +176,12 @@ class EventDetailsScreen extends StatelessWidget {
                           color: AppColors.mainColor,
                         ),
                         child: Icon(
-                          Icons.calendar_month,
+                          Icons.gps_fixed_rounded,
                           color: Theme.of(context).scaffoldBackgroundColor,
                         ),
                       ),
                       Text(
-                        'Location',
+                        AppLocalizations.of(context)!.location,
                         style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: AppColors.mainColor,
                         ),
@@ -210,7 +211,7 @@ class EventDetailsScreen extends StatelessWidget {
                   spacing: 8,
                   children: [
                     Text(
-                      'Description',
+                      AppLocalizations.of(context)!.description,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

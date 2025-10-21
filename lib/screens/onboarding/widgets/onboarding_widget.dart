@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:evently_application/screens/onboarding/models/onboarding_model.dart';
 import 'package:evently_application/screens/onboarding/widgets/onboarding_header.dart';
 import 'package:flutter/material.dart';
-import '../../../gen/assets.gen.dart';
 import '../../../common/theme/app_colors.dart';
 
 class OnboardingTabWidget extends StatelessWidget {
@@ -17,9 +16,7 @@ class OnboardingTabWidget extends StatelessWidget {
       child: Column(
         spacing: 30,
         children: [
-          SafeArea(
-            child: OnboardingHeader()
-          ),
+          SafeArea(child: OnboardingHeader()),
           Expanded(
             flex: 5,
             child: Container(
@@ -39,7 +36,7 @@ class OnboardingTabWidget extends StatelessWidget {
               children: [
                 FittedBox(
                   child: Text(
-                    onboardingModel.title,
+                    onboardingModel.getLocalizedTitle(context),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
@@ -49,10 +46,9 @@ class OnboardingTabWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: AutoSizeText(
-                    textAlign: TextAlign.left,
+                    onboardingModel.getLocalizedBrief(context),
                     minFontSize: 16,
-                    onboardingModel.brief,
-                    style: Theme.of(context).textTheme.titleMedium
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
               ],

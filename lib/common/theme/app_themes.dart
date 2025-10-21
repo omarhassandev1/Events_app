@@ -18,6 +18,7 @@ class AppTheme {
     hoverColor: AppColors.grayColor,
     focusColor: AppColors.lightBg,
     cardColor: AppColors.mainColor,
+    splashColor: Colors.transparent,
     appBarTheme: AppBarTheme(
       color: AppColors.lightBg,
       iconTheme: IconThemeData(color: AppColors.mainColor),
@@ -61,6 +62,7 @@ class AppTheme {
     hoverColor: AppColors.textColorDark,
     focusColor: AppColors.mainColor,
     cardColor: AppColors.lightBg,
+    splashColor: Colors.transparent,
     appBarTheme: AppBarTheme(
       color: AppColors.darkBg,
       iconTheme: IconThemeData(color: AppColors.mainColor),

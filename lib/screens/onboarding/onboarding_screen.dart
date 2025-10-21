@@ -1,3 +1,4 @@
+import 'package:evently_application/generated/app_localizations.dart';
 import 'package:evently_application/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,7 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         );
                       },
                       child: Text(
-                        "Back",
+                        AppLocalizations.of(context)!.back,
                         style: TextStyle(
                           color: AppColors.mainColor,
                           fontSize: 20,
@@ -93,8 +94,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   },
                   child: Text(
                     currentPage != OnboardingModel.onBoardingTabsData.length - 1
-                        ? "Next"
-                        : 'Finish',
+                        ? AppLocalizations.of(context)!.next
+                        : AppLocalizations.of(context)!.finish,
                     style: TextStyle(color: AppColors.mainColor, fontSize: 20),
                   ),
                 ),

@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
+import '../../generated/app_localizations.dart';
 import '../events/new_event/new_event_screen.dart';
 import 'fav_tab/favorite_tab.dart';
+import 'location_tab/location_screen.dart';
 
 class MainLayerScreen extends StatefulWidget {
   const MainLayerScreen({super.key});
@@ -27,7 +29,7 @@ class _MainLayerScreenState extends State<MainLayerScreen> {
 
   List<Widget> tabs = [
     HomeTab(),
-    Container(color: Colors.red),
+    LocationScreen(),
     FavoriteTab(),
     SettingsTab(),
   ];
@@ -69,22 +71,22 @@ class _MainLayerScreenState extends State<MainLayerScreen> {
             BottomNavigationBarItem(
               icon: Assets.svg.homeOutlined.svg(),
               activeIcon: Assets.svg.homeFilled.svg(),
-              label: 'Home',
+              label: AppLocalizations.of(context)!.home,
             ),
             BottomNavigationBarItem(
               icon: Assets.svg.locationOutlined.svg(),
               activeIcon: Assets.svg.locationFilledLight.svg(),
-              label: 'Location',
+              label: AppLocalizations.of(context)!.location,
             ),
             BottomNavigationBarItem(
               icon: Assets.svg.heartOutlined.svg(),
               activeIcon: Assets.svg.heartFilled.svg(),
-              label: 'Favorite',
+              label: AppLocalizations.of(context)!.favorite,
             ),
             BottomNavigationBarItem(
               icon: Assets.svg.profileOutlined.svg(),
               activeIcon: Assets.svg.profileFilled.svg(),
-              label: 'Profile',
+              label: AppLocalizations.of(context)!.settings,
             ),
           ],
         ),
