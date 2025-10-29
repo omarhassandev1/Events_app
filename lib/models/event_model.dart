@@ -39,15 +39,15 @@ class EventModel {
 
   static EventModel fromJson(Map<String, dynamic> json) {
     return EventModel(
-      id: json['id'],
-      title: json['title'],
-      date: json['date'],
-      description: json['description'],
-      isFav: json['isFav'],
-      catId: json['catId'],
+      id: json['id']??'',
+      title: json['title']??'',
+      date: json['date']??'',
+      description: json['description']??'',
+      isFav: json['isFav']??'',
+      catId: json['catId']??'',
       latitude: (json['latitude'] ?? 0).toDouble(),
       longitude: (json['longitude'] ?? 0).toDouble(),
-      locationName: json['locationName'],
+      locationName: json['locationName']??'',
     );
   }
 }
