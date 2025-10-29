@@ -49,7 +49,7 @@ The app also includes **Google Maps integration**, **multi-language support (Eng
 | Backend | Firebase (Auth, Firestore) |
 | Maps | Google Maps Flutter |
 | Location Services | [location](https://pub.dev/packages/location) |
-| UI Design | [[Figma](https://www.figma.com/design/YmDiRILnGg2sAoVcll7ZEb/Event-Planning-App?node-id=139-1933&p=f&t=RoRZ0BzgKQGLeP3l-0(] |
+| UI Design | [[Figma](https://www.figma.com/design/YmDiRILnGg2sAoVcll7ZEb/Event-Planning-App?node-id=139-1933&p=f&t=RoRZ0BzgKQGLeP3l-0) |
 | Localization | Flutter Localization |
 
 ---
@@ -122,6 +122,6 @@ lib/
 ---
 
 ## 📸 Screen record
-(https://drive.google.com/file/d/1ILPgEDId4BMo3sDrD4h1qdeRbCxIi0FP/view?usp=sharing)
+[Google Drive](https://drive.google.com/file/d/1ILPgEDId4BMo3sDrD4h1qdeRbCxIi0FP/view?usp=sharing)
 
 ---
