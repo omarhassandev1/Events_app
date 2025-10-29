@@ -119,9 +119,9 @@ lib/
    flutter run
    ```
 
----
+````
 
 ## 📸 Screen record
-(Google Drive)[https://drive.google.com/file/d/1ILPgEDId4BMo3sDrD4h1qdeRbCxIi0FP/view?usp=sharing]
+[Google Drive](https://drive.google.com/file/d/1ILPgEDId4BMo3sDrD4h1qdeRbCxIi0FP/view?usp=sharing)
 
 ---
