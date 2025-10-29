@@ -1,62 +1,144 @@
+import 'package:evently_application/models/category_model.dart';
+import 'package:evently_application/models/event_model.dart';
+import 'package:evently_application/provider/events_provider.dart';
+import 'package:evently_application/common/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import '../../../gen/assets.gen.dart';
 
-class LocationScreen extends StatefulWidget {
-  const LocationScreen({super.key});
+class LocationTab extends StatefulWidget {
+  const LocationTab({super.key});
 
   @override
-  State<LocationScreen> createState() => _LocationScreenState();
+  State<LocationTab> createState() => _LocationTabState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
-  String? _style;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _loadMapStyle();
-  }
+class _LocationTabState extends State<LocationTab> {
+  GoogleMapController? _mapController;
+  LatLng? _selectedLatLng;
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      initialCameraPosition: CameraPosition(
-        target: LatLng(31.1906176028795, 29.907885809610256),
-        zoom: 12,
-      ),
-      style: _style,
-      polylines: {
-        Polyline(
-          polylineId: PolylineId('1'),
-          color: Colors.blueAccent,
-          width: 5,
-          points: [
-            LatLng(30.0444, 31.2357),
-            LatLng(30.1700, 30.9500),
-            LatLng(30.5000, 30.3000),
-            LatLng(30.8000, 30.0000),
-            LatLng(31.0000, 29.8000),
-            LatLng(31.2001, 29.9187),
-          ],
+    final events = Provider.of<EventProvider>(context).eventsList;
+
+    Set<Marker> markers = events.map((event) {
+      return Marker(
+        markerId: MarkerId(event.title),
+        position: LatLng(event.latitude, event.longitude),
+        infoWindow: InfoWindow(
+          title: event.title,
+          snippet: event.locationName,
         ),
-      },
-      markers: {
-        Marker(
-          markerId: MarkerId('1'),
-          position: LatLng(31.1906176028795, 29.907885809610256),
+        onTap: () {
+          setState(() {
+            _selectedLatLng = LatLng(event.latitude, event.longitude);
+          });
+        },
+      );
+    }).toSet();
+
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: events.isNotEmpty
+                ? LatLng(events[0].latitude, events[0].longitude)
+                : const LatLng(30.0444, 31.2357),
+            zoom: 12,
+          ),
+          markers: markers,
+          onMapCreated: (controller) => _mapController = controller,
         ),
-      },
+        SizedBox(
+          height: 140,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              final event = events[index];
+              return GestureDetector(
+                onTap: () {
+                  _mapController?.animateCamera(
+                    CameraUpdate.newLatLng(
+                      LatLng(event.latitude, event.longitude),
+                    ),
+                  );
+                  setState(() {
+                    _selectedLatLng =
+                        LatLng(event.latitude, event.longitude);
+                  });
+                },
+                child: EventLocationCard(event: event),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
+}
 
-  Future<void> _loadMapStyle() async {
-    final String style = await rootBundle.loadString(
-      'assets/map_style/style.json',
+class EventLocationCard extends StatelessWidget {
+  const EventLocationCard({
+    super.key,
+    required this.event,
+  });
+
+  final EventModel event;
+
+  @override
+  Widget build(BuildContext context) {
+
+    int catId = event.catId;
+    CategoryModel category = CategoryModel.categories.where((e)=>e.id==catId).first;
+    category.image;
+    return Container(
+      width: MediaQuery.of(context).size.width*0.8,
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.mainColor),
+      ),
+      child: Row(
+        children: [
+          Expanded(child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(category.image!))),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  event.title,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    Assets.svg.locationOutlined.svg(),
+                    Expanded(
+                      child: Text(
+                        event.locationName,
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w500),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
-    setState(() {
-      _style = style;
-    });
   }
 }

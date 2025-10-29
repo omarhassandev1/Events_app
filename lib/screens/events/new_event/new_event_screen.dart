@@ -5,11 +5,13 @@ import 'package:evently_application/models/event_model.dart';
 import 'package:evently_application/screens/events/new_event/views/category_selector_view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../common/widgets/custom_text_field.dart';
 import '../../../generated/app_localizations.dart';
 import '../../../provider/events_provider.dart';
+import 'map_picker_screen.dart';
 
 class NewEventScreen extends StatefulWidget {
   const NewEventScreen({super.key});
@@ -27,6 +29,8 @@ class _NewEventScreenState extends State<NewEventScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  LatLng? _selectedLocation;
+  String? _locationName;
 
   @override
   Widget build(BuildContext context) {
@@ -146,41 +150,61 @@ class _NewEventScreenState extends State<NewEventScreen> {
                       ),
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.mainColor),
-                    ),
-                    child: Row(
-                      spacing: 8,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
+                  GestureDetector(
+                    onTap: () async {
+                      final pickedLocation = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MapPickerScreen(),
+                        ),
+                      );
+
+                      if (pickedLocation != null) {
+                        setState(() {
+                          _selectedLocation = LatLng(
+                            pickedLocation['lat'],
+                            pickedLocation['lng'],
+                          );
+                          _locationName = pickedLocation['name'];
+                        });
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.mainColor),
+                      ),
+                      child: Row(
+                        spacing: 8,
+                        children: [
+                          Container(
                             padding: EdgeInsets.all(12),
-                            backgroundColor: AppColors.mainColor,
-                            shape: RoundedRectangleBorder(
+                            decoration: BoxDecoration(
+                              color: AppColors.mainColor,
                               borderRadius: BorderRadius.circular(16),
                             ),
+                            child: Icon(
+                              Icons.my_location_rounded,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
                           ),
-                          child: Icon(
-                            Icons.my_location_rounded,
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                          Text(
+                            _locationName ??
+                                AppLocalizations.of(
+                                  context,
+                                )!.chooseEventLocation,
+                            style: Theme.of(context).textTheme.titleMedium!
+                                .copyWith(color: AppColors.mainColor),
                           ),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.chooseEventLocation,
-                          style: Theme.of(context).textTheme.titleMedium!
-                              .copyWith(color: AppColors.mainColor),
-                        ),
-                        Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: AppColors.mainColor,
-                        ),
-                      ],
+                          Spacer(),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: AppColors.mainColor,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SafeArea(
@@ -188,72 +212,73 @@ class _NewEventScreenState extends State<NewEventScreen> {
                       text: AppLocalizations.of(context)!.save,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          if (selectedTime != null && selectedDate != null) {
-                            selectedDate = selectedDate!.copyWith(
-                              hour: selectedTime!.hour,
-                              minute: selectedTime!.minute,
-                            );
-                            EventModel eventModel = EventModel(
-                              title: titleController.text,
-                              date: DateFormat(
-                                'yyyy-MM-dd hh:mm',
-                              ).format(selectedDate!),
-                              description: descriptionController.text,
-                              isFav: false,
-                              catId: selectedCategory.id,
-                            );
-                            try {
-                              showDialog(
-                                context: context,
-                                builder:
-                                    (context) => Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(50),
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  Theme.of(
-                                                    context,
-                                                  ).scaffoldBackgroundColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                            ),
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                barrierDismissible: false,
-                              );
-                              await Provider.of<EventProvider>(
-                                context,
-                                listen: false,
-                              ).addEvent(eventModel);
-
-                              Fluttertoast.showToast(
-                                msg: 'Event added',
-                                backgroundColor: Colors.green,
-                              );
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                            } catch (e) {
-                              Fluttertoast.showToast(
-                                msg: e.toString(),
-                                backgroundColor: Colors.red,
-                              );
-                            }
-                          } else {
+                          if (selectedDate == null || selectedTime == null) {
                             Fluttertoast.showToast(
-                              msg: 'Date and time required !',
+                              msg: 'Date and time are required!',
+                              backgroundColor: Colors.red,
+                            );
+                            return;
+                          }
+
+                          if (_selectedLocation == null) {
+                            Fluttertoast.showToast(
+                              msg: 'Location is required!',
+                              backgroundColor: Colors.red,
+                            );
+                            return;
+                          }
+
+                          selectedDate = selectedDate!.copyWith(
+                            hour: selectedTime!.hour,
+                            minute: selectedTime!.minute,
+                          );
+
+                          EventModel eventModel = EventModel(
+                            title: titleController.text,
+                            date: DateFormat('yyyy-MM-dd hh:mm').format(selectedDate!),
+                            description: descriptionController.text,
+                            isFav: false,
+                            catId: selectedCategory.id,
+                            latitude: _selectedLocation!.latitude,
+                            longitude: _selectedLocation!.longitude,
+                            locationName: _locationName!
+                          );
+
+                          try {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => Center(
+                                child: Container(
+                                  padding: const EdgeInsets.all(40),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: const CircularProgressIndicator(),
+                                ),
+                              ),
+                            );
+
+                            await Provider.of<EventProvider>(context, listen: false)
+                                .addEvent(eventModel);
+
+                            Navigator.of(context).pop();
+                            Fluttertoast.showToast(
+                              msg: 'Event added successfully!',
+                              backgroundColor: Colors.green,
+                            );
+                            Navigator.of(context).pop();
+                          } catch (e) {
+                            Navigator.of(context).pop();
+                            Fluttertoast.showToast(
+                              msg: 'Error: $e',
                               backgroundColor: Colors.red,
                             );
                           }
                         }
                       },
+
                     ),
                   ),
                 ],

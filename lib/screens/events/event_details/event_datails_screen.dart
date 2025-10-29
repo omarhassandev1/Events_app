@@ -3,21 +3,40 @@ import 'package:evently_application/models/category_model.dart';
 import 'package:evently_application/models/event_model.dart';
 import 'package:evently_application/provider/events_provider.dart';
 import 'package:evently_application/provider/user_provider.dart';
+import 'package:evently_application/screens/events/event_details/event_map.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../generated/app_localizations.dart';
+import '../../../provider/settings_provider.dart';
 import '../edit_event/edit_event_screen.dart';
 
-class EventDetailsScreen extends StatelessWidget {
+class EventDetailsScreen extends StatefulWidget {
   const EventDetailsScreen({super.key, required this.eventModel});
   final EventModel eventModel;
 
   @override
+  State<EventDetailsScreen> createState() => _EventDetailsScreenState();
+}
+
+class _EventDetailsScreenState extends State<EventDetailsScreen> {
+  String? _style;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadMapStyle();
+  }
+
+  @override
   Widget build(BuildContext context) {
     CategoryModel categoryModel =
-        CategoryModel.categories.where((e) => e.id == eventModel.catId).first;
+        CategoryModel.categories
+            .where((e) => e.id == widget.eventModel.catId)
+            .first;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.eventDescription),
@@ -28,16 +47,18 @@ class EventDetailsScreen extends StatelessWidget {
               spacing: 8,
               children: [
                 GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (_) => EditEventScreen(eventModel: eventModel),
-                        ),
-                      );
-                    },
-                    child: Assets.svg.editIcon.svg()),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) =>
+                                EditEventScreen(eventModel: widget.eventModel),
+                      ),
+                    );
+                  },
+                  child: Assets.svg.editIcon.svg(),
+                ),
                 GestureDetector(
                   onTap: () {
                     showDialog(
@@ -75,16 +96,18 @@ class EventDetailsScreen extends StatelessWidget {
                                   Provider.of<EventProvider>(
                                     context,
                                     listen: false,
-                                  ).removeEvent(eventModel);
+                                  ).removeEvent(widget.eventModel);
                                   Provider.of<UserProvider>(
                                     context,
                                     listen: false,
-                                  ).removeFavEvent(eventModel.id!);
+                                  ).removeFavEvent(widget.eventModel.id!);
 
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                 },
-                                child: Text(AppLocalizations.of(context)!.delete),
+                                child: Text(
+                                  AppLocalizations.of(context)!.delete,
+                                ),
                               ),
                             ],
                           ),
@@ -115,7 +138,7 @@ class EventDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  eventModel.title,
+                  widget.eventModel.title,
                   style: TextStyle(
                     color: AppColors.mainColor,
                     fontWeight: FontWeight.w500,
@@ -147,12 +170,12 @@ class EventDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            eventModel.date.split(' ').first,
+                            widget.eventModel.date.split(' ').first,
                             style: Theme.of(context).textTheme.titleLarge!
                                 .copyWith(color: AppColors.mainColor),
                           ),
                           Text(
-                            eventModel.date.split(' ').last,
+                            widget.eventModel.date.split(' ').last,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
@@ -160,52 +183,90 @@ class EventDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.mainColor),
-                  ),
-                  child: Row(
-                    spacing: 8,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: AppColors.mainColor,
-                        ),
-                        child: Icon(
-                          Icons.gps_fixed_rounded,
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                        ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => EventMap(eventModel: widget.eventModel),
                       ),
-                      Text(
-                        AppLocalizations.of(context)!.location,
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: AppColors.mainColor,
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.mainColor),
+                    ),
+                    child: Row(
+                      spacing: 8,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.mainColor,
+                          ),
+                          child: Icon(
+                            Icons.gps_fixed_rounded,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                          ),
                         ),
-                      ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
+                        Text(
+                          widget.eventModel.locationName.isNotEmpty
+                              ? widget.eventModel.locationName
+                              : AppLocalizations.of(context)!.location,
+                          style: Theme.of(context).textTheme.titleLarge!
+                              .copyWith(color: AppColors.mainColor),
+                        ),
+                        Spacer(),
+                        Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: AppColors.mainColor,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Container(
                   height: 350,
-                  width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.mainColor),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: GoogleMap(
+                      style: _style,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                          widget.eventModel.latitude,
+                          widget.eventModel.longitude,
+                        ),
+                        zoom: 15,
+                      ),
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId('event_location'),
+                          position: LatLng(
+                            widget.eventModel.latitude,
+                            widget.eventModel.longitude,
+                          ),
+                          infoWindow: InfoWindow(
+                            title: widget.eventModel.title,
+                          ),
+                        ),
+                      },
+                      zoomControlsEnabled: false,
+                      myLocationButtonEnabled: false,
+                      scrollGesturesEnabled: false,
+                      rotateGesturesEnabled: false,
+                      tiltGesturesEnabled: false,
+                      mapType: MapType.normal,
+                    ),
                   ),
                 ),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 8,
@@ -217,7 +278,7 @@ class EventDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      eventModel.description,
+                      widget.eventModel.description,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -228,5 +289,16 @@ class EventDetailsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _loadMapStyle() async {
+    final String style = await rootBundle.loadString(
+      'assets/map_style/style.json',
+    );
+    setState(() {
+      if (Provider.of<SettingsProvider>(context).themeMode == ThemeMode.dark) {
+        _style = style;
+      }
+    });
   }
 }

@@ -29,7 +29,7 @@ class _MainLayerScreenState extends State<MainLayerScreen> {
 
   List<Widget> tabs = [
     HomeTab(),
-    LocationScreen(),
+    LocationTab(),
     FavoriteTab(),
     SettingsTab(),
   ];

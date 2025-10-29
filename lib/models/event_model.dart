@@ -7,6 +7,9 @@ class EventModel {
   String description;
   bool isFav;
   int catId;
+  double latitude;
+  double longitude;
+  String locationName;
 
   EventModel({
     this.id,
@@ -15,6 +18,9 @@ class EventModel {
     required this.description,
     required this.isFav,
     required this.catId,
+    required this.latitude,
+    required this.longitude,
+    required this.locationName,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,6 +31,9 @@ class EventModel {
       'description': description,
       'isFav': isFav,
       'catId': catId,
+      'latitude': latitude,
+      'longitude': longitude,
+      'locationName': locationName,
     };
   }
 
@@ -36,6 +45,9 @@ class EventModel {
       description: json['description'],
       isFav: json['isFav'],
       catId: json['catId'],
+      latitude: (json['latitude'] ?? 0).toDouble(),
+      longitude: (json['longitude'] ?? 0).toDouble(),
+      locationName: json['locationName'],
     );
   }
 }
